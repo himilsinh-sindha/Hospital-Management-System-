@@ -1,0 +1,98 @@
+--> UPDATE ROOM AVAILABILITY AND ROOM CHARGES ON
+DISCHARGE:
+
+CREATE OR replace TRIGGER room_management
+AFTER UPDATE ON RECORDS
+FOR EACH ROW
+DECLARE
+rc bill_details.room_charges%TYPE := 0;
+nd NUMBER(10);
+patient_id records.p_id%TYPE := : old.p_id;
+discharge_date records.dt_discharged%TYPE := : new.dt_discharged;
+previous_value records.dt_discharged%TYPE := : old.dt_discharged;
+r_id room.room_id%TYPE;
+p_count NUMBER(2);
+BEGIN
+IF discharge_date IS NOT NULL AND previous_value IS NULL THEN
+SELECT r_cost
+INTO rc
+FROM ROOM_TYPE
+WHERE type_id = (SELECT type_id
+FROM ROOM
+WHERE room_id = (SELECT room_id
+FROM ROOM_INFO
+WHERE p_id = patient_id));
+SELECT ( r_exit_date - r_entry_date )
+INTO nd
+FROM ROOM_INFO
+WHERE p_id = patient_id;
+UPDATE BILL_DETAILS
+SET room_charges = nd * rc
+WHERE bill_id = (SELECT bill_id
+FROM BILL
+WHERE p_id = patient_id);
+SELECT room_id
+INTO r_id
+FROM ROOM_INFO
+WHERE p_id = patient_id;
+IF r_id IN ( 1, 2, 3 ) THEN
+UPDATE ROOM_INFO
+SET room_status = 'vacant',p_id = 0,r_entry_date = null,
+r_exit_date = null
+WHERE p_id = patient_id;
+ELSIF r_id IN ( 4, 5, 6, 7,8, 9, 10 ) THEN
+SELECT count(*)
+INTO p_count
+FROM ROOM_INFO
+WHERE room_id = r_id;
+IF p_count = 1 THEN
+UPDATE ROOM_INFO
+SET room_status = 'vacant',p_id = 0,r_entry_date = null,
+r_exit_date = null
+WHERE p_id = patient_id;
+ELSE
+DELETE FROM ROOM_INFO
+WHERE room_id = r_id;
+END IF;
+END IF;
+dbms_output.put_line
+('Patient has been discharged successfully, now room is vacant');
+END IF;
+END;
+
+--> CHECK APPOINTMENT AVAILABILITY:
+
+CREATE OR replace TRIGGER check_appointment_availability
+BEFORE INSERT OR UPDATE ON APPOINTMENT
+FOR EACH ROW
+DECLARE
+apt_count NUMBER;
+BEGIN
+IF TO_CHAR(:NEW.apt_date_slot,'mi') = 0 THEN
+SELECT count(*)
+INTO apt_count
+FROM APPOINTMENT
+WHERE doc_id = :NEW.doc_id AND apt_date_slot = :NEW.apt_date_slot;
+IF apt_count >= 1 THEN
+raise_application_error
+(-20001, 'Doctor appointment slot is already booked by other.');
+END IF;
+ELSE raise_application_error
+(-20006, 'Only Perfect Hours Appointment can be selected');
+END IF;
+END;
+
+--> UPDATE TEST CHARGES ON NEW PRESCRIPTION:
+
+CREATE OR replace TRIGGER update_test_charges
+BEFORE INSERT ON PRES_TEST
+FOR EACH ROW
+BEGIN
+UPDATE BILL_DETAILS
+SET test_charges = ( test_charges + :NEW.test_cost )
+WHERE bill_id = (SELECT bill_id
+FROM BILL
+WHERE p_id = (SELECT p_id
+FROM PRESCRIPTION
+WHERE pres_id = :NEW.pres_id));
+END;
