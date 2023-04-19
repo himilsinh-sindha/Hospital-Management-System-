@@ -1,152 +1,258 @@
 --> ADD NEW PATIENT DETAILS:
 
-CREATE OR replace PROCEDURE add_patient (
-p_pph_no IN patient.pph_no%TYPE,
-p_pgender IN patient.pgender%TYPE,
-p_patient_name IN patient.patient_name%TYPE,
-p_paddress IN patient.paddress%TYPE,
-p_dt_admitted IN records.dt_admitted%TYPE)
+CREATE OR replace PROCEDURE Add_patient (p_pph_no       IN patient.pph_no%TYPE,
+                                         p_pgender      IN patient.pgender%TYPE,
+                                         p_patient_name IN
+patient.patient_name%TYPE,
+                                         p_paddress     IN
+patient.paddress%TYPE,
+                                         p_dt_admitted  IN
+records.dt_admitted%TYPE)
 IS
-patient_id patient.p_id%TYPE;
-p_count NUMBER(10);
-bill_id1 bill_details.bill_id%TYPE;
-b_count NUMBER(10);
-r_count NUMBER(10);
-r_id records.record_id%TYPE;
+  patient_id patient.p_id%TYPE;
+  p_count    NUMBER(10);
+  bill_id1   bill_details.bill_id%TYPE;
+  b_count    NUMBER(10);
+  r_count    NUMBER(10);
+  r_id       records.record_id%TYPE;
 BEGIN
-SELECT max(p_id)
-INTO p_count
-FROM PATIENT;
-patient_id := p_count + 1;
-INSERT INTO PATIENT (p_id,pph_no,pgender,patient_name,paddress)
-VALUES (patient_id,p_pph_no,p_pgender,p_patient_name,p_paddress);
-dbms_output.put_line
-('Patient is successfully registered with Patient ID :' || patient_id);
-SELECT max(record_id)
-INTO r_count
-FROM RECORDS;
-r_id := r_count + 1;
-INSERT INTO RECORDS
-(record_id,p_id,dt_admitted,dt_discharged,treatment)
-VALUES (r_id,patient_id,p_dt_admitted,null,null);
-assign_room_to_patient(patient_id);
-UPDATE ROOM_INFO
-SET r_entry_date = p_dt_admitted
-WHERE p_id = patient_id;
-SELECT max(bill_id)
-INTO b_count
-FROM BILL_DETAILS;
-bill_id1 := b_count + 1;
-INSERT INTO BILL (bill_id,bill_dt,p_id)
-VALUES (bill_id1,sysdate,patient_id);
-INSERT INTO BILL_DETAILS
-(bill_id,doc_charges,room_charges,med_charges,other_charges,test_charges,
-mode_of_pay,status,pay_id)
-VALUES (bill_id1,0,0,0,0,0,null,'unpaid',null);
-END add_patient;
+    SELECT Max(p_id)
+    INTO   p_count
+    FROM   patient;
+
+    patient_id := p_count + 1;
+
+    INSERT INTO patient
+                (p_id,
+                 pph_no,
+                 pgender,
+                 patient_name,
+                 paddress)
+    VALUES      (patient_id,
+                 p_pph_no,
+                 p_pgender,
+                 p_patient_name,
+                 p_paddress);
+
+    dbms_output.Put_line ('Patient is successfully registered with Patient ID :'
+                          || patient_id);
+
+    SELECT Max(record_id)
+    INTO   r_count
+    FROM   records;
+
+    r_id := r_count + 1;
+
+    INSERT INTO records
+                (record_id,
+                 p_id,
+                 dt_admitted,
+                 dt_discharged,
+                 treatment)
+    VALUES      (r_id,
+                 patient_id,
+                 p_dt_admitted,
+                 NULL,
+                 NULL);
+
+    Assign_room_to_patient(patient_id);
+
+    UPDATE room_info
+    SET    r_entry_date = p_dt_admitted
+    WHERE  p_id = patient_id;
+
+    SELECT Max(bill_id)
+    INTO   b_count
+    FROM   bill_details;
+
+    bill_id1 := b_count + 1;
+
+    INSERT INTO bill
+                (bill_id,
+                 bill_dt,
+                 p_id)
+    VALUES      (bill_id1,
+                 SYSDATE,
+                 patient_id);
+
+    INSERT INTO bill_details
+                (bill_id,
+                 doc_charges,
+                 room_charges,
+                 med_charges,
+                 other_charges,
+                 test_charges,
+                 mode_of_pay,
+                 status,
+                 pay_id)
+    VALUES      (bill_id1,
+                 0,
+                 0,
+                 0,
+                 0,
+                 0,
+                 NULL,
+                 'unpaid',
+                 NULL);
+END add_patient; 
 
 --> ASSIGN ROOM TO PATIENT:
 
-CREATE OR replace PROCEDURE assign_room_to_patient(patient_id IN
+CREATE OR replace PROCEDURE Assign_room_to_patient(patient_id IN
 patient.p_id%TYPE)
 IS
-v_room_status room_info.room_status%TYPE;
-assign BOOLEAN := false;
-p_count NUMBER(2);
-t_count NUMBER(2);
-present_id patient.p_id%TYPE := null;
-r_id room.room_id%TYPE;
-CURSOR c1 IS SELECT * FROM ROOM_INFO ORDER BY room_id;
-r1 c1%ROWTYPE;
+  v_room_status room_info.room_status%TYPE;
+  ASSIGN        BOOLEAN := FALSE;
+  p_count       NUMBER(2);
+  t_count       NUMBER(2);
+  present_id    patient.p_id%TYPE := NULL;
+  r_id          room.room_id%TYPE;
+  CURSOR c1 IS
+    SELECT *
+    FROM   room_info
+    ORDER  BY room_id;
+  r1            c1%ROWTYPE;
 BEGIN
-OPEN c1;
-SELECT p_id
-INTO present_id
-FROM ROOM_INFO
-WHERE p_id = patient_id;
-IF present_id IS NOT NULL THEN
-dbms_output.put_line('Room is already assigned to Patient');
-END IF;
-CLOSE c1;
+    OPEN c1;
+
+    SELECT p_id
+    INTO   present_id
+    FROM   room_info
+    WHERE  p_id = patient_id;
+
+    IF present_id IS NOT NULL THEN
+      dbms_output.Put_line('Room is already assigned to Patient');
+    END IF;
+
+    CLOSE c1;
 EXCEPTION
-WHEN no_data_found THEN
-LOOP
-FETCH c1 INTO r1;
-r_id := r1.room_id;
-SELECT count(*)
-INTO t_count
-FROM ROOM_INFO;
-IF r1.room_status = 'vacant' THEN
-IF r1.room_id IN ( 1, 2, 3 ) THEN
-UPDATE ROOM_INFO SET p_id = patient_id,
-room_status = 'occupied'
-WHERE room_id = r_id AND p_id = 0;
-dbms_output.put_line('Patient ID :' || patient_id ||
-' Is Assigned To Special Room With Room ID :' || r_id);
-assign := true;
-ELSIF r1.room_id IN ( 4, 5, 6, 7, 8 ) THEN
-SELECT count(*) INTO p_count FROM ROOM_INFO
-WHERE room_id = r_id;
-IF p_count <= 3 THEN
-IF p_count < 3 THEN
-UPDATE ROOM_INFO SET p_id = patient_id,
-room_status = 'occupied'
-WHERE room_id = r_id AND p_id = 0;
-dbms_output.put_line('Patient ID :' || patient_id ||
-' Is Assigned To Semi-Special Room With Room ID :' || r_id);
-assign := true;
-INSERT INTO ROOM_INFO
-VALUES ( r1.room_id,0,null,null,'vacant');
-ELSIF p_count = 3 THEN
-UPDATE ROOM_INFO SET p_id = patient_id,
-room_status = 'occupied'
-WHERE room_id = r_id AND p_id = 0;
-assign := true;
-END IF;
-END IF;
-ELSIF r1.room_id IN ( 9, 10 ) THEN
- SELECT count(*) INTO p_count FROM ROOM_INFO
-WHERE room_id = r_id;
-IF p_count <= 10 THEN
-IF p_count < 10 THEN
-UPDATE ROOM_INFO SET p_id = patient_id,
-room_status = 'occupied'
-WHERE room_id = r_id AND p_id = 0;
-dbms_output.put_line('Patient ID :' || patient_id ||
-' Is Assigned To General Ward With Room ID :' || r_id);
-assign := true;
-INSERT INTO ROOM_INFO
-VALUES (r1.room_id,0,null,null,'vacant');
-ELSIF p_count = 10 THEN
-UPDATE ROOM_INFO SET p_id = patient_id,
-room_status = 'occupied'
-WHERE room_id = r_id AND p_id = 0;
-assign := true;
-END IF;
-END IF;
-END IF;
-ELSIF t_count = 38 THEN
-dbms_output.put_line('No Room Is Available');
-exit;
-END IF;
-END LOOP;
-WHEN OTHERS THEN
-dbms_output.put_line('Error assigning room to patient');
-END assign_room_to_patient;
+  WHEN no_data_found THEN
+             LOOP
+                 FETCH c1 INTO r1;
+
+                 r_id := r1.room_id;
+
+                 SELECT Count(*)
+                 INTO   t_count
+                 FROM   room_info;
+
+                 IF r1.room_status = 'vacant' THEN
+                   IF r1.room_id IN ( 1, 2, 3 ) THEN
+                     UPDATE room_info
+                     SET    p_id = patient_id,
+                            room_status = 'occupied'
+                     WHERE  room_id = r_id
+                            AND p_id = 0;
+
+                     dbms_output.Put_line('Patient ID :'
+                                          || patient_id
+                                          ||
+                     ' Is Assigned To Special Room With Room ID :'
+                                          || r_id);
+
+                     ASSIGN := TRUE;
+                   ELSIF r1.room_id IN ( 4, 5, 6, 7, 8 ) THEN
+                     SELECT Count(*)
+                     INTO   p_count
+                     FROM   room_info
+                     WHERE  room_id = r_id;
+
+                     IF p_count <= 3 THEN
+                       IF p_count < 3 THEN
+                         UPDATE room_info
+                         SET    p_id = patient_id,
+                                room_status = 'occupied'
+                         WHERE  room_id = r_id
+                                AND p_id = 0;
+
+                         dbms_output.Put_line('Patient ID :'
+                                              || patient_id
+                                              ||
+                         ' Is Assigned To Semi-Special Room With Room ID :'
+                                              || r_id);
+
+                         ASSIGN := TRUE;
+
+                         INSERT INTO room_info
+                         VALUES      ( r1.room_id,
+                                      0,
+                                      NULL,
+                                      NULL,
+                                      'vacant');
+                       ELSIF p_count = 3 THEN
+                         UPDATE room_info
+                         SET    p_id = patient_id,
+                                room_status = 'occupied'
+                         WHERE  room_id = r_id
+                                AND p_id = 0;
+
+                         ASSIGN := TRUE;
+                       END IF;
+                     END IF;
+                   ELSIF r1.room_id IN ( 9, 10 ) THEN
+                     SELECT Count(*)
+                     INTO   p_count
+                     FROM   room_info
+                     WHERE  room_id = r_id;
+
+                     IF p_count <= 10 THEN
+                       IF p_count < 10 THEN
+                         UPDATE room_info
+                         SET    p_id = patient_id,
+                                room_status = 'occupied'
+                         WHERE  room_id = r_id
+                                AND p_id = 0;
+
+                         dbms_output.Put_line('Patient ID :'
+                                              || patient_id
+                                              ||
+                         ' Is Assigned To General Ward With Room ID :'
+                                              || r_id);
+
+                         ASSIGN := TRUE;
+
+                         INSERT INTO room_info
+                         VALUES      (r1.room_id,
+                                      0,
+                                      NULL,
+                                      NULL,
+                                      'vacant');
+                       ELSIF p_count = 10 THEN
+                         UPDATE room_info
+                         SET    p_id = patient_id,
+                                room_status = 'occupied'
+                         WHERE  room_id = r_id
+                                AND p_id = 0;
+
+                         ASSIGN := TRUE;
+                       END IF;
+                     END IF;
+                   END IF;
+                 ELSIF t_count = 38 THEN
+                   dbms_output.Put_line('No Room Is Available');
+
+                   exit;
+                 END IF;
+             END LOOP; WHEN OTHERS THEN
+             dbms_output.Put_line('Error assigning room to patient');
+END assign_room_to_patient; 
 
 --> UPDATE DISCHARGE DATE:
 
-CREATE OR replace PROCEDURE update_discharge_date (patient_id IN
+CREATE OR replace PROCEDURE Update_discharge_date (patient_id IN
 patient.p_id%TYPE)
 IS
-dis_date room_info.r_exit_date%TYPE;
+  dis_date room_info.r_exit_date%TYPE;
 BEGIN
-SELECT r_exit_date
-INTO dis_date
-FROM ROOM_INFO r
-WHERE r.p_id = patient_id;
-UPDATE RECORDS re
-SET re.dt_discharged = dis_date
-WHERE re.p_id = patient_id;
-dbms_output.put_line('patient discharged on : ' || dis_date);
-END update_discharge_date;
+    SELECT r_exit_date
+    INTO   dis_date
+    FROM   room_info r
+    WHERE  r.p_id = patient_id;
+
+    UPDATE records re
+    SET    re.dt_discharged = dis_date
+    WHERE  re.p_id = patient_id;
+
+    dbms_output.Put_line('patient discharged on : '
+                         || dis_date);
+END update_discharge_date; 
