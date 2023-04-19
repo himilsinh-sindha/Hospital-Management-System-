@@ -1,0 +1,51 @@
+--> CALCULATE TOTAL BILL:
+
+CREATE OR replace FUNCTION calculate_total_bill(p IN patient.p_id%TYPE)
+RETURN NUMBER
+IS
+total_bill NUMBER := 0
+BEGIN
+SELECT ( doc_charges + room_charges + med_charges
++ test_charges + other_charges )
+INTO total_bill
+FROM bill_details
+WHERE bill_id = (SELECT bill_id
+FROM bill
+WHERE p_id = p);
+RETURN total_bill;
+END;
+
+--> SEARCH ROOM ID WITH PATIENT NAME:
+
+CREATE OR replace FUNCTION get_patient_room(p_name IN
+patient.patient_name%TYPE)
+RETURN room.room_id%TYPE
+AS
+r_id room.room_id%TYPE;
+BEGIN
+SELECT r.room_id
+INTO r_id
+FROM room r
+inner join room_info ri ON r.room_id = ri.room_id
+inner join patient p ON ri.p_id = p.p_id
+WHERE upper(p.patient_name) = upper(p_name);
+RETURN r_id;
+END;
+
+--> FIND NUMBER OF PATIENTS WITH A GIVEN DISEASE:
+
+CREATE OR replace FUNCTION patients_count_of_disease(d_name IN
+diagnose.diag_disease%TYPE)
+RETURN NUMBER
+AS
+p_count NUMBER(5);
+BEGIN
+SELECT count(*)
+INTO p_count
+FROM diagnose
+WHERE upper(diag_disease) = upper(d_name);
+RETURN p_count;
+EXCEPTION
+WHEN no_data_found THEN
+dbms_output.put_line('There is no patient with this disease.');
+END;
