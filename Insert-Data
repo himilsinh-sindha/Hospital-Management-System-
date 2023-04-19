@@ -1,0 +1,173 @@
+INSERT DATA:
+
+INSERT INTO staff VALUES (1, 'Mary Smith', '5555555555', '789 Cedar St, Anytown, USA', 'Female');
+INSERT INTO staff VALUES (2, 'Tom Wilson', '5551239876', '123 Birch St, Anytown, USA', 'Male');
+INSERT INTO staff VALUES (3, 'Karen Brown', '5557894561', '321 Willow St, Anytown, USA', 'Female');
+INSERT INTO staff VALUES (4, 'David Johnson', '5554567890', '456 Cherry St, Anytown, USA', 'Male');
+INSERT INTO staff VALUES (5, 'Sarah Lee', '5553216549', '789 Pine St, Anytown, USA', 'Female');
+INSERT INTO staff VALUES (6, 'Mike Patel', '5558887777', '123 Maple St, Anytown, USA', 'Male');
+INSERT INTO staff VALUES (7, 'Emily Nguyen', '5554443333', '456 Oak St, Anytown, USA', 'Female');
+INSERT INTO staff VALUES (8, 'James Wilson', '5552221111', '789 Elm St, Anytown, USA', 'Male');
+INSERT INTO staff VALUES (9, 'Linda Brown', '5557778888', '321 Cedar St, Anytown, USA', 'Female');
+INSERT INTO staff VALUES (10, 'Mark Johnson', '5556665555', '456 Birch St, Anytown, USA', 'Male');
+
+INSERT INTO doctor (doc_id, speciality) VALUES (1, 'Cardiology');
+INSERT INTO doctor (doc_id, speciality) VALUES (2, 'Neurology');
+INSERT INTO doctor (doc_id, speciality) VALUES (3, 'Pediatrics');
+INSERT INTO doctor (doc_id, speciality) VALUES (4, 'Oncology');
+INSERT INTO doctor (doc_id, speciality) VALUES (5, 'Gastroenterology');
+
+INSERT INTO nurse (nurse_id, shift_type) VALUES (6, 'Day Shift');
+INSERT INTO nurse (nurse_id, shift_type) VALUES (7, 'Night Shift');
+INSERT INTO nurse (nurse_id, shift_type) VALUES (8, 'Day Shift');
+INSERT INTO nurse (nurse_id, shift_type) VALUES (9, 'Night Shift');
+INSERT INTO nurse (nurse_id, shift_type) VALUES (10, 'Day Shift');
+
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000001, '9999999999', 'Male', 'Amit Kumar', '123 Main St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000002, '8888888888', 'Female', 'Sunita Devi', '456 Oak St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000003, '7777777777', 'Male', 'Rahul Sharma', '789 Maple St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000004, '6666666666', 'Female', 'Priya Patel', '321 Willow St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000005, '5555555555', 'Male', 'Sanjay Singh', '123 Birch St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000006, '4444444444', 'Female', 'Deepika Gupta', '789 Pine St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000007, '3333333333', 'Male', 'Manish Patel', '123 Maple St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000008, '2222222222', 'Female', 'Komal Sharma', '456 Oak St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000009, '1111111111', 'Male', 'Anuj Singh', '789 Elm St, Anytown, India');
+INSERT INTO patient (p_id, pph_no, pgender, patient_name, paddress) VALUES (1000000010, '0000000000', 'Female', 'Sapna Gupta', '321 Cedar St, Anytown, India');
+
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000111, 1, 1000000002);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000222, 2, 1000000004);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000333, 1, 1000000006);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000444, 3, 1000000008);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000555, 5, 1000000010);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000666, 5, 1000000003);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000777, 4, 1000000005);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000888, 1, 1000000007);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000999, 2, 1000000002);
+INSERT INTO prescription (pres_id, doc_id, p_id) VALUES (1000000110, 1, 1000000010);
+
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (101, 1000000111, 'Positive', to_date('2023-04-01','yyyy-mm-dd'), 500);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (102, 1000000999, 'Negative', to_date('2023-04-02','yyyy-mm-dd'), 250);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (103, 1000000777, 'Positive', to_date('2023-04-03','yyyy-mm-dd'), 1000);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (104, 1000000444, 'Negative', to_date('2023-04-04','yyyy-mm-dd'), 125);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (105, 1000000222, 'Positive', to_date('2023-04-05','yyyy-mm-dd'), 750);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (106, 1000000222, 'Negative', to_date('2023-04-06','yyyy-mm-dd'), 50);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (107, 1000000999, 'Positive', to_date('2023-04-07','yyyy-mm-dd'), 250);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (108, 1000000333, 'Negative', to_date('2023-04-08','yyyy-mm-dd'), 375);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (109, 1000000111, 'Positive', to_date('2023-04-09','yyyy-mm-dd'), 800);
+INSERT INTO pres_test (test_id, pres_id, test_result, test_date, test_cost) VALUES (110, 1000000111, 'Negative', to_date('2023-04-10','yyyy-mm-dd'), 90);
+
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (101, 'Blood Sugar', '70-110 mg/dL', '70-120 mg/dL');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (102, 'Blood Pressure', '120/80 mmHg', '110-130/70-90 mmHg');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (103, 'Cholesterol', 'Less than 200 mg/dL', 'Less than 200 mg/dL');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (104, 'Thyroid Stimulating Hormone', '0.4-4.0 mU/L', '0.4-4.0 mU/L');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (105, 'Complete Blood Count', '4.5-11.0 x 10^3/μL', '4.5-11.0 x 10^3/μL');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (106, 'Liver Function Test', '0-40 U/L', '0-40 U/L');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (107, 'Kidney Function Test', '7-20 mg/dL', '7-20 mg/dL');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (108, 'Electrocardiogram', 'N/A', 'N/A');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (109, 'X-Ray', 'N/A', 'N/A');
+INSERT INTO test_details (test_id, test_type, p_range, bio_range_mf) VALUES (110, 'Urine Test', 'Clear and yellow', 'Clear and yellow');
+
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (11, 'Paracetamol', 10.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (12, 'Ibuprofen', 20.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (13, 'Amoxicillin', 15.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (14, 'Lisinopril', 25.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (15, 'Atorvastatin', 30.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (16, 'Metformin', 12.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (17, 'Omeprazole', 18.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (18, 'Simvastatin', 28.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (19, 'Aspirin', 8.00);
+INSERT INTO medicine_details (med_id, name, m_unit_price) VALUES (20, 'Ciprofloxacin', 22.00);
+
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000111, 11, 20, '1 tablet every 6 hours');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000999, 12, 30, '2 tablets every 8 hours');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000222, 13, 10, '1 capsule every 12 hours');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000444, 14, 15, '1 tablet every night');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000333, 15, 5, '1 tablet every morning');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000111, 16, 25, '1 tablet before meals');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000333, 17, 20, '1 capsule every 8 hours');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000111, 18, 30, '1 tablet every morning');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000444, 19, 40, '1 tablet every 6 hours');
+INSERT INTO pres_medicine (pres_id, med_id, m_qty, m_dosage) VALUES (1000000777, 20, 10, '1 tablet every 12 hours');
+
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (1, 1000000001, '01-Jan-2023', '10-Jan-2023', 'Administered antibiotics and fluids to treat pneumonia.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (2, 1000000002, to_date('2023-02-15','yyyy-mm-dd'), to_date('2023-02-20','yyyy-mm-dd'), 'Performed surgery to remove a tumor.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (3, 1000000003, to_date('2023-03-10','yyyy-mm-dd'), to_date('2023-03-12','yyyy-mm-dd'), 'Treated for a minor injury and prescribed pain medication.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (4, 1000000004, to_date('2023-04-02','yyyy-mm-dd'), to_date('2023-04-07','yyyy-mm-dd'), 'Administered IV fluids and antibiotics to treat an infection.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (5, 1000000005, to_date('2023-05-03','yyyy-mm-dd'), to_date('2023-05-05','yyyy-mm-dd'), 'Treated for high fever and prescribed antipyretic medication.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (6, 1000000006, to_date('2023-06-15','yyyy-mm-dd'), to_date('2023-06-20','yyyy-mm-dd'), 'Treated for hypertension and prescribed medication to manage blood pressure.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (7, 1000000007, to_date('2023-07-01','yyyy-mm-dd'), to_date('2023-07-03','yyyy-mm-dd'), 'Treated for an allergic reaction and prescribed antihistamines.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (8, 1000000008, to_date('2023-08-11','yyyy-mm-dd'), to_date('2023-08-20','yyyy-mm-dd'), 'Underwent physical therapy to recover from a leg injury.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (9, 1000000009, to_date('2023-09-05','yyyy-mm-dd'), to_date('2023-09-07','yyyy-mm-dd'), 'Treated for a respiratory infection and prescribed antibiotics.');
+INSERT INTO records (record_id, p_id, dt_admitted, dt_discharged, treatment) VALUES (10, 1000000010, to_date('2023-10-01','yyyy-mm-dd'), to_date('2023-10-05','yyyy-mm-dd'), 'Underwent diagnostic tests to investigate abdominal pain.');
+
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (101, 1, 1000000001, 'Common Cold');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (102, 2, 1000000002, 'Malaria');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (103, 3, 1000000003, 'Dengue');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (104, 4, 1000000004, 'Typhoid');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (105, 5, 1000000005, 'Pneumonia');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (106, 5, 1000000006, 'Tuberculosis');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (107, 4, 1000000007, 'Cancer');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (108, 3, 1000000008, 'Heart Disease');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (109, 2, 1000000009, 'Diabetes');
+INSERT INTO diagnose (test_id, doc_id, p_id, Diag_disease) VALUES (110, 1, 1000000010, 'Chronic Kidney Disease');
+
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10001, '11-Apr-2023', 1000000001);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10002, '12-Apr-2023', 1000000002);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10003, '11-Apr-2023', 1000000003);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10004, '15-Apr-2023', 1000000004);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10005, '05-Apr-2023', 1000000005);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10006, '02-Apr-2023', 1000000006);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10007, '10-Apr-2023', 1000000007);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10008, '13-Apr-2023', 1000000008);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10009, '20-Apr-2023', 1000000009);
+INSERT INTO bill (bill_id, bill_dt, p_id) VALUES (10010, '21-Apr-2023', 1000000010);
+
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10001, 500.00, 2000.00, 1000.00, 2500.00, 500.00, 'Credit Card', 'Paid', 50001);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10002, 800.00, 2500.00, 1500.00, 3500.00, 1000.00, 'Debit Card', 'Paid', 50003);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10003, 400.00, 100.00, 8800.00, 1000.00, 300.00, 'Cheque', 'Paid', 50006);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10004, 700.00, 1500.00, 800.00, 2000.00, 300.00, 'Cheque', 'Paid', 50002);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10005, 900.00, 3000.00, 2500.00, 5000.00, 1200.00, 'Credit Card', 'Paid', 50005);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10006, 1000.00, 2000.00, 1500.00, 3000.00, 500.00, 'Debit Card', 'Paid', 50004);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10007, 1200.00, 2500.00, 2000.00, 3500.00, 1000.00, 'Cash', 'Unpaid', NULL);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10008, 800.00, 1500.00, 1000.00, 2000.00, 500.00, 'Cheque', 'Unpaid', NULL);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10009, 800.00, 1500.00, 1000.00, 2000.00, 500.00, 'Cheque', 'Unpaid', NULL);
+INSERT INTO bill_details (bill_id, doc_charges, room_charges, med_charges, test_charges, other_charges, mode_of_pay, status, pay_id) VALUES (10010, 800.00, 1500.00, 1000.00, 2000.00, 500.00, 'Cheque', 'Unpaid', NULL);
+
+
+INSERT INTO room(room_id,type_id) VALUES (1,1);
+INSERT INTO room(room_id,type_id) VALUES (2,1);
+INSERT INTO room(room_id,type_id) VALUES (3,1);
+INSERT INTO room(room_id,type_id) VALUES (4,2);
+INSERT INTO room(room_id,type_id) VALUES (5,2);
+INSERT INTO room(room_id,type_id) VALUES (6,2);
+INSERT INTO room(room_id,type_id) VALUES (7,2);
+INSERT INTO room(room_id,type_id) VALUES (8,2);
+INSERT INTO room(room_id,type_id) VALUES (9,3);
+INSERT INTO room(room_id,type_id) VALUES (10,3);
+
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (1,1000000001,'12-Apr-2023',NULL,'occupied');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (2,1000000002,'12-Apr-2023','14-Apr-2023','vacant');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (3,1000000003,'13-Apr-2023',NULL,'occupied');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (4,1000000004,'13-Apr-2023',NULL,'occupied');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (5,1000000005,'14-Apr-2023',NULL,'occupied');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (6,1000000006,'14-Apr-2023','16-Apr-2023','vacant');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (7,1000000007,'15-Apr-2023','18-Apr-2023','vacant');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (8,1000000008,'15-Apr-2023',NULL,'occupied');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (9,1000000009,'16-Apr-2023',NULL,'occupied');
+INSERT INTO room_info(room_id,p_id,r_entry_date,r_exit_date,room_status) VALUES (10,1000000010,'17-Apr-2023','20-Apr-2023','vacant');
+
+INSERT INTO room_type (type_id,type_name, r_cost) VALUES (1,'Special',7000);
+INSERT INTO room_type (type_id,type_name, r_cost) VALUES (2,'Semi-Special', 5000);
+INSERT INTO room_type (type_id,type_name, r_cost) VALUES (3,'General Ward',3500);
+
+
+INSERT INTO appointment VALUES (1, 1, 1000000001, to_date('13-Apr-2023 10:00:00 AM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (2, 2, 1000000002, to_date('14-Apr-2023 11:30:00 AM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (3, 3, 1000000003, to_date('15-Apr-2023 2:45:00 PM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (4, 4, 1000000004, to_date('16-Apr-2023 9:15:00 AM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (5, 5, 1000000005, to_date('17-Apr-2023 3:00:00 PM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (6, 1, 1000000006, to_date('18-Apr-2023 10:30:00 AM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (7, 2, 1000000007, to_date('19-Apr-2023 11:00:00 AM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (8, 3, 1000000008, to_date('20-Apr-2023 1:45:00 PM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (9, 4, 1000000009, to_date('21-Apr-2023 4:30:00 PM','dd-Mon-yyyy hh:mi:ss AM'));
+INSERT INTO appointment VALUES (10, 5, 1000000010, to_date('22-Apr-2023 12:15:00 PM','dd-Mon-yyyy hh:mi:ss AM'));
