@@ -1,0 +1,144 @@
+CREATE TABLES QUERY:
+
+CREATE TABLE staff (
+  staff_id NUMBER(10) PRIMARY KEY,
+  staff_name VARCHAR(255),
+  sphno VARCHAR(255),
+  saddress VARCHAR(255),
+  sgender VARCHAR(10)
+);
+
+CREATE TABLE doctor (
+  doc_id NUMBER(10) PRIMARY KEY,
+  speciality VARCHAR(255),
+  FOREIGN KEY (doc_id) REFERENCES staff(staff_id)
+);
+
+CREATE TABLE nurse (
+    nurse_id NUMBER(10) PRIMARY KEY,
+    shift_type VARCHAR(50),
+    FOREIGN KEY (nurse_id) REFERENCES staff(staff_id)
+);
+
+CREATE TABLE patient (
+  p_id NUMBER(10) PRIMARY KEY,
+  pph_no VARCHAR(255),
+  pgender VARCHAR(10),
+  patient_name VARCHAR(255),
+  paddress VARCHAR(255)
+);
+
+CREATE TABLE prescription (
+  pres_id NUMBER(10) PRIMARY KEY,
+  doc_id NUMBER(10),
+  p_id NUMBER(10),
+  FOREIGN KEY (doc_id) REFERENCES doctor(doc_id),
+  FOREIGN KEY (p_id) REFERENCES patient(p_id)
+);
+
+CREATE TABLE pres_test (
+  test_id NUMBER(10) PRIMARY KEY,
+  pres_id NUMBER(10),
+  test_result VARCHAR(255),
+  test_date DATE,
+  test_cost DECIMAL(10,2),
+  FOREIGN KEY (pres_id) REFERENCES prescription(pres_id)
+);
+
+CREATE TABLE test_details (
+  test_id NUMBER(10) PRIMARY KEY,
+  test_type VARCHAR(255),
+  p_range VARCHAR(255),
+  bio_range_mf VARCHAR(255),
+  FOREIGN KEY (test_id) REFERENCES pres_test(test_id)
+);
+
+CREATE TABLE medicine_details (
+  med_id NUMBER(10) PRIMARY KEY,
+  name VARCHAR(255),
+  m_unit_price DECIMAL(10,2)
+);
+
+CREATE TABLE pres_medicine (
+  pres_id NUMBER(10),
+  med_id NUMBER(10),
+  m_qty NUMBER(10),
+  m_dosage VARCHAR(255),
+  PRIMARY KEY(pres_id,med_id),
+  FOREIGN KEY (pres_id) REFERENCES prescription(pres_id),
+  FOREIGN KEY (med_id) REFERENCES medicine_details(med_id)
+);
+
+CREATE TABLE records (
+  record_id NUMBER(10),
+  p_id NUMBER(10),
+  dt_admitted DATE,
+  dt_discharged DATE,
+  treatment VARCHAR(255),
+  PRIMARY KEY(record_id,p_id),
+  FOREIGN KEY (p_id) REFERENCES patient(p_id)
+);
+
+CREATE TABLE diagnose (
+  test_id NUMBER(10),
+  doc_id NUMBER(10),
+  p_id NUMBER(10),
+  Diag_disease VARCHAR(255),
+  PRIMARY KEY (test_id, doc_id, p_id),
+  FOREIGN KEY (test_id) REFERENCES pres_test(test_id),
+  FOREIGN KEY (doc_id) REFERENCES doctor(doc_id),
+  FOREIGN KEY (p_id) REFERENCES patient(p_id)
+);
+
+CREATE TABLE bill (
+  bill_id NUMBER(10) PRIMARY KEY,
+  bill_dt DATE,
+  p_id NUMBER(10),
+  FOREIGN KEY (p_id) REFERENCES patient(p_id)
+);
+
+CREATE TABLE bill_details (
+  bill_id NUMBER(10),
+  doc_charges DECIMAL(10,2),
+  room_charges DECIMAL(10,2),
+  med_charges DECIMAL(10,2),
+  test_charges DECIMAL(10,2),
+  other_charges DECIMAL(10,2),
+  mode_of_pay VARCHAR(255),
+  status VARCHAR(255),
+  pay_id NUMBER(10),
+  PRIMARY KEY (bill_id),
+  FOREIGN KEY (bill_id) REFERENCES bill(bill_id)
+);
+
+
+CREATE TABLE appointment (
+  apt_id NUMBER(10) PRIMARY KEY,
+  doc_id NUMBER(10),
+  p_id NUMBER(10),
+  apt_date_slot DATE,
+  FOREIGN KEY (doc_id) REFERENCES doctor(doc_id),
+  FOREIGN KEY (p_id) REFERENCES patient(p_id)
+);
+
+CREATE TABLE room_type (
+  type_id NUMBER(10) PRIMARY KEY,
+  type_name VARCHAR(255),
+  r_cost DECIMAL(10,2)
+);
+
+CREATE TABLE room(
+  room_id NUMBER(10) PRIMARY KEY,
+  type_id NUMBER(10),
+  FOREIGN KEY (type_id) REFERENCES room_type(type_id));
+
+CREATE TABLE room_info(
+  room_id NUMBER(10),
+  p_id NUMBER(10),
+  r_entry_date DATE,
+  r_exit_date DATE,
+  room_status VARCHAR(255),
+  PRIMARY KEY(room_id,p_id),
+  FOREIGN KEY (room_id) REFERENCES room(room_id),
+  FOREIGN KEY (p_id) REFERENCES patient(p_id)
+);
